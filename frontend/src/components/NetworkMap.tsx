@@ -1,4 +1,4 @@
-import { useEfill do graphfect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Globe, Server, Laptop, Shield, AlertTriangle } from 'lucide-react'
 import { geoIPService } from '../utils/geoip'
 import './NetworkMap.css'
@@ -82,7 +82,7 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
       // Update node data
       const srcNode = newNodes.get(srcIP)!
       const dstNode = newNodes.get(dstIP)!
-      
+
       srcNode.packets++
       dstNode.packets++
       srcNode.protocols.add(packet.protocol)
@@ -126,15 +126,15 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
     connections.forEach(connection => {
       const sourceNode = nodes.get(connection.source)
       const targetNode = nodes.get(connection.target)
-      
+
       if (sourceNode && targetNode) {
         ctx.beginPath()
         ctx.moveTo(sourceNode.x, sourceNode.y)
         ctx.lineTo(targetNode.x, targetNode.y)
-        
+
         // Line thickness based on packet count
         ctx.lineWidth = Math.min(Math.max(connection.packets / 10, 1), 5)
-        
+
         // Color based on protocols
         if (connection.protocols.includes('HTTP')) {
           ctx.strokeStyle = '#4aff88'
@@ -145,13 +145,13 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
         } else {
           ctx.strokeStyle = '#888'
         }
-        
+
         ctx.stroke()
 
         // Draw packet count
         const midX = (sourceNode.x + targetNode.x) / 2
         const midY = (sourceNode.y + targetNode.y) / 2
-        
+
         ctx.fillStyle = '#fff'
         ctx.font = '10px Arial'
         ctx.textAlign = 'center'
@@ -163,7 +163,7 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
     nodes.forEach(node => {
       ctx.beginPath()
       ctx.arc(node.x, node.y, getNodeRadius(node), 0, 2 * Math.PI)
-      
+
       // Node color based on type and status
       if (node.suspicious) {
         ctx.fillStyle = '#ff4a4a'
@@ -174,9 +174,9 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
       } else {
         ctx.fillStyle = '#ffa94a'
       }
-      
+
       ctx.fill()
-      
+
       // Border
       ctx.strokeStyle = '#fff'
       ctx.lineWidth = 2
@@ -194,12 +194,12 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
     if (ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.')) {
       return 'local'
     }
-    
+
     // Common server IPs
     if (ip === '8.8.8.8' || ip === '1.1.1.1' || ip.includes('google') || ip.includes('cloudflare')) {
       return 'server'
     }
-    
+
     return 'remote'
   }
 
@@ -220,10 +220,10 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
     // Check for suspicious ports
     const suspiciousPorts = [1337, 31337, 4444, 5555, 6666, 7777]
     if (packet.dst_port && suspiciousPorts.includes(packet.dst_port)) return true
-    
+
     // Check for unusual protocols
     if (packet.protocol === 'Telnet') return true
-    
+
     return false
   }
 
@@ -276,7 +276,7 @@ export default function NetworkMap({ packets }: NetworkMapProps) {
               {selectedNode.suspicious && <AlertTriangle size={16} className="warning" />}
               <span>{selectedNode.ip}</span>
             </div>
-            
+
             <div className="node-info">
               <div className="info-item">
                 <span>Type:</span>

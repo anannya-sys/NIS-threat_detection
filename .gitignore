@@ -1,0 +1,20 @@
+# --- System Files (Mac/Windows) ---
+.DS_Store
+Thumbs.db
+
+# --- Backend (Python) ---
+backend/venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Frontend (Node.js/React) ---
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+
+# --- Environment Variables (Keep secrets safe) ---
+.env
+backend/.env
+frontend/.env.local

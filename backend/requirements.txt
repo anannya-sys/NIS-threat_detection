@@ -1,0 +1,5 @@
+fastapi>=0.68.0
+uvicorn[standard]>=0.15.0
+scapy>=2.4.5
+websockets>=10.0
+requests
